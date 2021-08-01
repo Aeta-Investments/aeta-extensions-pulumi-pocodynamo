@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using FluentAssertions;
 using ServiceStack.DataAnnotations;
 using Xunit;
@@ -13,11 +12,11 @@ namespace Aeta.Extensions.Pulumi.PocoDynamo.Tests
         {
             var assembly = typeof(TableToFind).Assembly;
             var builders = assembly.FindPocoDynamoTableDefinitions().ToList();
-            
+
             builders.Should().NotBeEmpty();
             builders.Should().Contain(builder => builder.TableName == "TableToFind");
         }
-        
+
         [Fact]
         public void FindTables_Should_Find_Polymorphic_Tables_In_Assembly_Decorated_With_AliasAttribute()
         {
@@ -27,12 +26,7 @@ namespace Aeta.Extensions.Pulumi.PocoDynamo.Tests
 
             builder.Should().NotBeNull();
             builder!.Metadatas.Select(m => m.Type)
-                .Should().BeEquivalentTo(new object[]
-                {
-                    typeof(TableToFind),
-                    typeof(TableToFindKindOne),
-                    typeof(TableToFindKindTwo)
-                });
+                .Should().BeEquivalentTo(typeof(TableToFind), typeof(TableToFindKindOne), typeof(TableToFindKindTwo));
         }
     }
 
@@ -41,11 +35,15 @@ namespace Aeta.Extensions.Pulumi.PocoDynamo.Tests
     {
         [HashKey] public string HashKey { get; set; }
     }
-    
+
     [Alias("TableToFind")]
-    public class TableToFindKindOne : TableToFind {}
-    
-    
+    public class TableToFindKindOne : TableToFind
+    {
+    }
+
+
     [Alias("TableToFind")]
-    public class TableToFindKindTwo : TableToFind {}
+    public class TableToFindKindTwo : TableToFind
+    {
+    }
 }
