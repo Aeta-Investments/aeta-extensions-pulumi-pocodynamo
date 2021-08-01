@@ -4,6 +4,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9959A6E7-22D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aeta.Extensions.Pulumi.PocoDynamo", "src\Aeta.Extensions.Pulumi.PocoDynamo\Aeta.Extensions.Pulumi.PocoDynamo.csproj", "{1DC1CB92-72C2-4768-810A-1DAB390D4C28}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C8AE8206-6CF7-41A6-A597-EDD72D181947}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aeta.Extensions.Pulumi.PocoDynamo.Tests", "tests\Aeta.Extensions.Pulumi.PocoDynamo.Tests\Aeta.Extensions.Pulumi.PocoDynamo.Tests.csproj", "{C6DE7DEB-B2A9-4E62-9E2B-C0B32E517C67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -11,11 +15,16 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1DC1CB92-72C2-4768-810A-1DAB390D4C28} = {9959A6E7-22DF-43B0-9477-E19FBFC80C83}
+		{C6DE7DEB-B2A9-4E62-9E2B-C0B32E517C67} = {C8AE8206-6CF7-41A6-A597-EDD72D181947}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1DC1CB92-72C2-4768-810A-1DAB390D4C28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1DC1CB92-72C2-4768-810A-1DAB390D4C28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DC1CB92-72C2-4768-810A-1DAB390D4C28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DC1CB92-72C2-4768-810A-1DAB390D4C28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6DE7DEB-B2A9-4E62-9E2B-C0B32E517C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6DE7DEB-B2A9-4E62-9E2B-C0B32E517C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6DE7DEB-B2A9-4E62-9E2B-C0B32E517C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6DE7DEB-B2A9-4E62-9E2B-C0B32E517C67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
