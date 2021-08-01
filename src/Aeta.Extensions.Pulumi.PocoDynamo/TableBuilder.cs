@@ -8,21 +8,21 @@ using ServiceStack.Aws.DynamoDb;
 
 namespace Aeta.Extensions.Pulumi.PocoDynamo
 {
-    public class TableGroup
+    public class TableBuilder
     {
-        private readonly IEnumerable<DynamoMetadataType> _metadatas;
+        public IEnumerable<DynamoMetadataType> Metadatas { get; }
 
-        public string TableName { get; }
-        
-        public TableGroup(string tableName, IEnumerable<Type> types)
+        public TableBuilder(string tableName, IEnumerable<Type> types)
         {
             TableName = tableName;
-            _metadatas = types.Select(DynamoMetadata.RegisterTable).ToList();
+            Metadatas = types.Select(DynamoMetadata.RegisterTable).ToList();
         }
 
-        public void SetTableAttributes(TableArgs tableArgs)
+        public string TableName { get; }
+
+        public TableBuilder SetTableAttributes(TableArgs tableArgs)
         {
-            tableArgs.Attributes = _metadatas
+            tableArgs.Attributes = Metadatas
                 .SelectMany(metadata => metadata.Fields)
                 .DistinctBy(field => field.Name)
                 .Select(field => new TableAttributeArgs
@@ -30,11 +30,13 @@ namespace Aeta.Extensions.Pulumi.PocoDynamo
                     Name = field.Name,
                     Type = field.DbType
                 }).ToList();
+
+            return this;
         }
 
-        public void SetBillingMode(TableArgs tableArgs)
+        public TableBuilder SetBillingMode(TableArgs tableArgs)
         {
-            var metadata = _metadatas.FirstOrDefault(table => table.ReadCapacityUnits.HasValue);
+            var metadata = Metadatas.FirstOrDefault(table => table.ReadCapacityUnits.HasValue);
             if (metadata is null)
             {
                 tableArgs.BillingMode = "PAY_PER_REQUEST";
@@ -43,27 +45,31 @@ namespace Aeta.Extensions.Pulumi.PocoDynamo
             {
                 tableArgs.BillingMode = "PROVISIONED";
                 tableArgs.ReadCapacity = metadata.ReadCapacityUnits;
-                tableArgs.WriteCapacity = metadata.ReadCapacityUnits;
+                tableArgs.WriteCapacity = metadata.WriteCapacityUnits;
             }
+
+            return this;
         }
 
-        public void SetPrimaryKey(TableArgs tableArgs)
+        public TableBuilder SetKeySchema(TableArgs tableArgs)
         {
-            var metadata = _metadatas.FirstOrDefault(table => table.HashKey is not null);
+            var metadata = Metadatas.FirstOrDefault(table => table.HashKey is not null);
             if (metadata is null)
                 throw new ArgumentException("Could not find a property with HashKey attribute in this table group.");
 
             tableArgs.HashKey = metadata.HashKey.Name;
             tableArgs.RangeKey = metadata.RangeKey?.Name;
+
+            return this;
         }
 
-        public void SetGlobalSecondaryIndexes(TableArgs tableArgs)
+        public TableBuilder SetGlobalSecondaryIndexes(TableArgs tableArgs)
         {
-            var metadata = _metadatas.FirstOrDefault(table => !table.GlobalIndexes.IsEmpty());
-            if (metadata is null) return;
+            var metadata = Metadatas.FirstOrDefault(table => !table.GlobalIndexes.IsEmpty());
+            if (metadata is null) return this;
 
             tableArgs.GlobalSecondaryIndexes = metadata.GlobalIndexes.Select(index =>
-                new TableGlobalSecondaryIndexArgs()
+                new TableGlobalSecondaryIndexArgs
                 {
                     Name = index.Name,
                     HashKey = index.HashKey.Name,
@@ -73,6 +79,8 @@ namespace Aeta.Extensions.Pulumi.PocoDynamo
                     ReadCapacity = (int?) index.ReadCapacityUnits,
                     WriteCapacity = (int?) index.WriteCapacityUnits
                 }).ToList();
+
+            return this;
         }
     }
 }
