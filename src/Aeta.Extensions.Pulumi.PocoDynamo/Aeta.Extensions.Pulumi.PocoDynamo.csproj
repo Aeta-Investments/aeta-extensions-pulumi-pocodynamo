@@ -3,6 +3,18 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <LangVersion>latest</LangVersion>
+
+        <Version>1.0.0</Version>
+        <Description>Extensions to translate POCODynamo table metadata to Pulumi DynamoDb TableArgs.</Description>
+
+        <Authors>Arinze Anozie</Authors>
+        <Company>Aeta Investments Inc.</Company>
+        <Copyright>Copyright (c) Aeta Investments Inc.</Copyright>
+
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/Aeta-Investments/aeta-extensions-pulumi-pocodynamo.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/Aeta-Investments/aeta-extensions-pulumi-pocodynamo</PackageProjectUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     </PropertyGroup>
 
     <ItemGroup>
